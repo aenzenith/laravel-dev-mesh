@@ -63,3 +63,23 @@ it('keeps notable raw lines with a level', function () {
         ->and($error?->status)->toBe(MeshEvent::ERROR)
         ->and($exception?->status)->toBe(MeshEvent::ERROR);
 });
+
+it('shortens the command summary bullet of a scheduled task to binary, artisan and command', function () {
+    $foreground = parseMeshLine("    ⇂ '/Users/dev/Library/Application Support/Herd/bin/php85' 'artisan' orders:retry-webhooks > '/dev/null' 2>&1", 'schedule');
+    $background = parseMeshLine("    ⇂ ('/opt/php/bin/php85' 'artisan' core:warm-catalog > '/dev/null' 2>&1 ; '/opt/php/bin/php85' 'artisan' schedule:finish \"framework/schedule-abc\" \"$?\") > '/dev/null' 2>&1 &", 'schedule', '(arka plan)');
+    $appended = parseMeshLine("    ⇂ '/usr/bin/php' 'artisan' reports:rollup --force >> '/srv/shop/storage/logs/rollup.log' 2>&1", 'schedule');
+    $exec = parseMeshLine("    ⇂ curl -s https://example.test/ping > '/dev/null' 2>&1", 'schedule');
+
+    expect($foreground?->label)->toBe('php85 artisan orders:retry-webhooks')
+        ->and($foreground?->status)->toBe(MeshEvent::INFO)
+        ->and($foreground?->time)->toBe('09:00:00')
+        ->and($background?->label)->toBe('php85 artisan core:warm-catalog (arka plan)')
+        ->and($appended?->label)->toBe('php artisan reports:rollup --force')
+        ->and($exec?->label)->toBe('curl -s https://example.test/ping');
+});
+
+it('shortens a scheduled command that still carries the php binary and redirects', function () {
+    $event = parseMeshLine("  2026-09-15 17:42:00 Running ['/opt/php/bin/php85' 'artisan' reports:rollup > '/dev/null' 2>&1] ..... 1s DONE", 'schedule');
+
+    expect($event?->label)->toBe('reports:rollup');
+});

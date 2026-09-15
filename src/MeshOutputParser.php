@@ -13,6 +13,12 @@ final class MeshOutputParser
 {
     private const TASK_LINE = '/^\d{4}-\d{2}-\d{2} (?<time>\d{2}:\d{2}:\d{2})\s+(?<label>.+?)(?:\s+(?<duration>\d+(?:\.\d+)?\s?(?:ms|s|m)(?:\s\d+(?:\.\d+)?\s?(?:ms|s))?))?\s+(?<status>RUNNING|DONE|FAIL|SKIPPED)$/u';
 
+    /**
+     * The command summary `schedule:run` prints under every task as a bullet:
+     * the full shell line, php binary path and output redirects included.
+     */
+    private const SUMMARY_LINE = '/^⇂\s+(?<command>.+)$/u';
+
     /** @var list<string> */
     private const NOISE = [
         'No scheduled commands are ready to run',
@@ -56,6 +62,10 @@ final class MeshOutputParser
             );
         }
 
+        if (preg_match(self::SUMMARY_LINE, $text, $match) === 1) {
+            return new MeshEvent($fallbackTime, $project, $service, $this->shortCommand($match['command']), MeshEvent::INFO);
+        }
+
         if (preg_match('/^(?<level>INFO|WARN|WARNING|ERROR)\s+(?<message>.+)$/', $text, $match) === 1) {
             $status = match ($match['level']) {
                 'INFO' => MeshEvent::INFO,
@@ -95,8 +105,42 @@ final class MeshOutputParser
             return $label;
         }
 
-        $command = (string) preg_replace('/^[\'"]?artisan[\'"]?\s+/', '', $match['command']);
+        $command = (string) preg_replace('/^(?:\S*php\S*\s+)?artisan\s+/', '', $this->shortCommand($match['command'], withSuffix: false));
 
         return ($match['background'] ?? '') !== '' ? "{$command} {$this->backgroundSuffix}" : $command;
+    }
+
+    /**
+     * `'/usr/local/bin/php85' 'artisan' reports:rollup > '/dev/null' 2>&1`
+     * → `php85 artisan reports:rollup`. The background wrapper
+     * `(<command> > … ; <php> 'artisan' schedule:finish "…" "$?") > … 2>&1 &`
+     * is unwrapped to its first command and marked with the background suffix.
+     */
+    private function shortCommand(string $command, bool $withSuffix = true): string
+    {
+        $command = trim($command);
+        $background = false;
+
+        if (preg_match('/^\((?<inner>.+?)\s*;\s*.*schedule:finish.*\)\s*>.*&$/s', $command, $match) === 1) {
+            $command = $match['inner'];
+            $background = true;
+        }
+
+        $command = trim((string) preg_replace('/\s*>>?\s*(?:\'[^\']*\'|"[^"]*"|\S+)(?:\s+2>&1)?(?=\s|$)/', '', $command));
+        $command = trim((string) preg_replace('/\s+2>&1$/', '', $command));
+
+        preg_match_all('/\'[^\']*\'|"[^"]*"|\S+/', $command, $matches);
+
+        $tokens = [];
+
+        foreach ($matches[0] as $index => $token) {
+            $bare = (string) preg_replace('/^([\'"])(.*)\1$/s', '$2', $token);
+
+            $tokens[] = $index === 0 && str_contains($bare, '/') ? basename($bare) : $bare;
+        }
+
+        $command = implode(' ', $tokens);
+
+        return $background && $withSuffix ? "{$command} {$this->backgroundSuffix}" : $command;
     }
 }
