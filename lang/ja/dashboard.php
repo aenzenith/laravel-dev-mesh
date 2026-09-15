@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'uptime' => '稼働',
+    'quit_hint' => 'q / Ctrl+C で終了',
+    'project' => 'プロジェクト',
+    'done' => '✓ 完了',
+    'failed' => '✕ 失敗',
+    'per_minute' => 'ジョブ/分',
+    'last_job' => '最新ジョブ',
+    'last_error' => '最新エラー',
+    'feed' => '最近の活動',
+    'feed_empty' => 'まだありません',
+    'missing' => 'ディレクトリなし',
+    'exit_code' => '終了コード :code',
+    'retry_in' => ':seconds 秒',
+    'status_error' => 'エラー',
+    'status_warn' => '警告',
+    'background' => '(バックグラウンド)',
+    'started' => 'dev-mesh: :projects プロジェクト x :services サービスを実行中。Ctrl+C で停止。',
+    'stopping' => 'サービスを停止しています…',
+    'stopped' => 'dev-mesh: すべてのサービスを停止しました。',
+    'crashed' => '停止 (終了コード :code)、:seconds 秒後に再起動',
+    'restarted' => '再起動しました',
+];

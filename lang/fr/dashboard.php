@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'uptime' => 'durée',
+    'quit_hint' => 'q / Ctrl+C pour quitter',
+    'project' => 'Projet',
+    'done' => '✓ Terminés',
+    'failed' => '✕ Échoués',
+    'per_minute' => 'Jobs/min',
+    'last_job' => 'Dernier job',
+    'last_error' => 'Dernière erreur',
+    'feed' => 'Activité récente',
+    'feed_empty' => 'Rien pour le moment',
+    'missing' => 'répertoire absent',
+    'exit_code' => 'code :code',
+    'retry_in' => ':seconds s',
+    'status_error' => 'ERREUR',
+    'status_warn' => 'ALERTE',
+    'background' => '(arrière-plan)',
+    'started' => 'dev-mesh : :projects projet(s) x :services service(s) en cours. Ctrl+C pour arrêter.',
+    'stopping' => 'Arrêt des services…',
+    'stopped' => 'dev-mesh : tous les services sont arrêtés.',
+    'crashed' => 'arrêté (code :code), redémarrage dans :seconds s',
+    'restarted' => 'redémarré',
+];

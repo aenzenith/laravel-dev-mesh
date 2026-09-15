@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'uptime' => 'مدة التشغيل',
+    'quit_hint' => 'q / Ctrl+C للخروج',
+    'project' => 'المشروع',
+    'done' => '✓ منجز',
+    'failed' => '✕ فاشل',
+    'per_minute' => 'مهام/د',
+    'last_job' => 'آخر مهمة',
+    'last_error' => 'آخر خطأ',
+    'feed' => 'النشاط الأخير',
+    'feed_empty' => 'لا شيء بعد',
+    'missing' => 'لا يوجد مجلد',
+    'exit_code' => 'خروج :code',
+    'retry_in' => ':seconds ث',
+    'status_error' => 'خطأ',
+    'status_warn' => 'تحذير',
+    'background' => '(خلفية)',
+    'started' => 'dev-mesh: :projects مشروع x :services خدمة قيد التشغيل. اضغط Ctrl+C للإيقاف.',
+    'stopping' => 'جارٍ إيقاف الخدمات…',
+    'stopped' => 'dev-mesh: تم إيقاف جميع الخدمات.',
+    'crashed' => 'توقف (خروج :code)، إعادة التشغيل خلال :seconds ث',
+    'restarted' => 'أُعيد تشغيله',
+];

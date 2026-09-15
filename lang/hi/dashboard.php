@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'uptime' => 'अपटाइम',
+    'quit_hint' => 'q / Ctrl+C से बाहर निकलें',
+    'project' => 'प्रोजेक्ट',
+    'done' => '✓ पूर्ण',
+    'failed' => '✕ विफल',
+    'per_minute' => 'जॉब/मिनट',
+    'last_job' => 'अंतिम जॉब',
+    'last_error' => 'अंतिम त्रुटि',
+    'feed' => 'हाल की गतिविधि',
+    'feed_empty' => 'अभी कुछ नहीं',
+    'missing' => 'डायरेक्टरी नहीं',
+    'exit_code' => 'एग्ज़िट :code',
+    'retry_in' => ':seconds से',
+    'status_error' => 'त्रुटि',
+    'status_warn' => 'चेतावनी',
+    'background' => '(पृष्ठभूमि)',
+    'started' => 'dev-mesh: :projects प्रोजेक्ट x :services सेवाएँ चल रही हैं। रोकने के लिए Ctrl+C दबाएँ।',
+    'stopping' => 'सेवाएँ रोकी जा रही हैं…',
+    'stopped' => 'dev-mesh: सभी सेवाएँ रुक गईं।',
+    'crashed' => 'रुक गया (एग्ज़िट :code), :seconds से में पुनः आरंभ',
+    'restarted' => 'पुनः आरंभ हुआ',
+];

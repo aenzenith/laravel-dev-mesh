@@ -1,0 +1,62 @@
+{
+    "name": "aenzenith/laravel-dev-mesh",
+    "description": "Run Horizon, the scheduler and other long-running artisan services of several Laravel projects from one live terminal dashboard.",
+    "keywords": ["laravel", "horizon", "scheduler", "development", "dashboard", "terminal", "tui"],
+    "license": "MIT",
+    "homepage": "https://github.com/aenzenith/laravel-dev-mesh",
+    "support": {
+        "issues": "https://github.com/aenzenith/laravel-dev-mesh/issues",
+        "source": "https://github.com/aenzenith/laravel-dev-mesh"
+    },
+    "type": "library",
+    "authors": [
+        {
+            "name": "Mustafa Sarı"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "ext-pcntl": "*",
+        "ext-posix": "*",
+        "illuminate/console": "^12.0|^13.0",
+        "illuminate/support": "^12.0|^13.0",
+        "symfony/console": "^7.0|^8.0",
+        "symfony/process": "^7.0|^8.0"
+    },
+    "require-dev": {
+        "larastan/larastan": "^3.0",
+        "laravel/pint": "^1.18",
+        "orchestra/testbench": "^10.0|^11.0",
+        "pestphp/pest": "^3.0|^4.0|^5.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Aenzenith\\DevMesh\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Aenzenith\\DevMesh\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Aenzenith\\DevMesh\\DevMeshServiceProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "test": "pest",
+        "format": "pint",
+        "analyse": "phpstan analyse --memory-limit=1G"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

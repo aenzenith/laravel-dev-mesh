@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'uptime' => '가동',
+    'quit_hint' => 'q / Ctrl+C 종료',
+    'project' => '프로젝트',
+    'done' => '✓ 완료',
+    'failed' => '✕ 실패',
+    'per_minute' => '작업/분',
+    'last_job' => '최근 작업',
+    'last_error' => '최근 오류',
+    'feed' => '최근 활동',
+    'feed_empty' => '아직 없음',
+    'missing' => '디렉터리 없음',
+    'exit_code' => '종료 코드 :code',
+    'retry_in' => ':seconds초',
+    'status_error' => '오류',
+    'status_warn' => '경고',
+    'background' => '(백그라운드)',
+    'started' => 'dev-mesh: 프로젝트 :projects개 x 서비스 :services개 실행 중. Ctrl+C로 중지.',
+    'stopping' => '서비스를 중지하는 중…',
+    'stopped' => 'dev-mesh: 모든 서비스가 중지되었습니다.',
+    'crashed' => '중지됨 (종료 코드 :code), :seconds초 후 재시작',
+    'restarted' => '재시작됨',
+];

@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'uptime' => 'аптайм',
+    'quit_hint' => 'q / Ctrl+C для выхода',
+    'project' => 'Проект',
+    'done' => '✓ Готово',
+    'failed' => '✕ Ошибки',
+    'per_minute' => 'Задач/мин',
+    'last_job' => 'Последняя задача',
+    'last_error' => 'Последняя ошибка',
+    'feed' => 'Недавняя активность',
+    'feed_empty' => 'Пока пусто',
+    'missing' => 'нет каталога',
+    'exit_code' => 'код :code',
+    'retry_in' => ':seconds с',
+    'status_error' => 'ОШИБКА',
+    'status_warn' => 'ВНИМАНИЕ',
+    'background' => '(фон)',
+    'started' => 'dev-mesh: :projects проект(ов) x :services сервис(ов) запущено. Ctrl+C для остановки.',
+    'stopping' => 'Остановка сервисов…',
+    'stopped' => 'dev-mesh: все сервисы остановлены.',
+    'crashed' => 'остановлен (код :code), перезапуск через :seconds с',
+    'restarted' => 'перезапущен',
+];

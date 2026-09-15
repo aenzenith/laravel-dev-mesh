@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'uptime' => 'Laufzeit',
+    'quit_hint' => 'q / Strg+C zum Beenden',
+    'project' => 'Projekt',
+    'done' => '✓ Fertig',
+    'failed' => '✕ Fehler',
+    'per_minute' => 'Jobs/min',
+    'last_job' => 'Letzter Job',
+    'last_error' => 'Letzter Fehler',
+    'feed' => 'Letzte Aktivität',
+    'feed_empty' => 'Noch nichts',
+    'missing' => 'kein Verzeichnis',
+    'exit_code' => 'Exit :code',
+    'retry_in' => ':seconds s',
+    'status_error' => 'FEHLER',
+    'status_warn' => 'WARNUNG',
+    'background' => '(Hintergrund)',
+    'started' => 'dev-mesh: :projects Projekt(e) x :services Dienst(e) laufen. Strg+C zum Beenden.',
+    'stopping' => 'Dienste werden gestoppt…',
+    'stopped' => 'dev-mesh: alle Dienste gestoppt.',
+    'crashed' => 'gestoppt (Exit :code), Neustart in :seconds s',
+    'restarted' => 'neu gestartet',
+];

@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'uptime' => 'thời gian chạy',
+    'quit_hint' => 'q / Ctrl+C để thoát',
+    'project' => 'Dự án',
+    'done' => '✓ Xong',
+    'failed' => '✕ Lỗi',
+    'per_minute' => 'Job/phút',
+    'last_job' => 'Job gần nhất',
+    'last_error' => 'Lỗi gần nhất',
+    'feed' => 'Hoạt động gần đây',
+    'feed_empty' => 'Chưa có gì',
+    'missing' => 'không có thư mục',
+    'exit_code' => 'mã thoát :code',
+    'retry_in' => ':seconds giây',
+    'status_error' => 'LỖI',
+    'status_warn' => 'CẢNH BÁO',
+    'background' => '(nền)',
+    'started' => 'dev-mesh: :projects dự án x :services dịch vụ đang chạy. Nhấn Ctrl+C để dừng.',
+    'stopping' => 'Đang dừng các dịch vụ…',
+    'stopped' => 'dev-mesh: tất cả dịch vụ đã dừng.',
+    'crashed' => 'đã dừng (mã thoát :code), khởi động lại sau :seconds giây',
+    'restarted' => 'đã khởi động lại',
+];

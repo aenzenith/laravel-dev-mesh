@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'uptime' => 'çalışma',
+    'quit_hint' => 'q / Ctrl+C çıkış',
+    'project' => 'Proje',
+    'done' => '✓ İş',
+    'failed' => '✕ Hata',
+    'per_minute' => 'İş/dk',
+    'last_job' => 'Son işlem',
+    'last_error' => 'Son hata',
+    'feed' => 'Son işlemler',
+    'feed_empty' => 'Henüz işlem yok',
+    'missing' => 'dizin yok',
+    'exit_code' => 'çıkış :code',
+    'retry_in' => ':seconds sn',
+    'status_error' => 'HATA',
+    'status_warn' => 'UYARI',
+    'background' => '(arka plan)',
+    'started' => 'dev-mesh: :projects proje x :services hizmet ayakta. Ctrl+C ile hepsi durur.',
+    'stopping' => 'Servisler durduruluyor…',
+    'stopped' => 'dev-mesh: tüm servisler durdu.',
+    'crashed' => 'durdu (çıkış :code), :seconds sn sonra yeniden başlatılacak',
+    'restarted' => 'yeniden başlatıldı',
+];

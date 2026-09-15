@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'uptime' => 'uptime',
+    'quit_hint' => 'q / Ctrl+C om te stoppen',
+    'project' => 'Project',
+    'done' => '✓ Klaar',
+    'failed' => '✕ Mislukt',
+    'per_minute' => 'Jobs/min',
+    'last_job' => 'Laatste job',
+    'last_error' => 'Laatste fout',
+    'feed' => 'Recente activiteit',
+    'feed_empty' => 'Nog niets',
+    'missing' => 'geen map',
+    'exit_code' => 'exit :code',
+    'retry_in' => ':seconds s',
+    'status_error' => 'FOUT',
+    'status_warn' => 'WAARSCH',
+    'background' => '(achtergrond)',
+    'started' => 'dev-mesh: :projects project(en) x :services service(s) actief. Ctrl+C om te stoppen.',
+    'stopping' => 'Services worden gestopt…',
+    'stopped' => 'dev-mesh: alle services gestopt.',
+    'crashed' => 'gestopt (exit :code), herstart over :seconds s',
+    'restarted' => 'herstart',
+];

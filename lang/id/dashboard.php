@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'uptime' => 'aktif',
+    'quit_hint' => 'q / Ctrl+C untuk keluar',
+    'project' => 'Proyek',
+    'done' => '✓ Selesai',
+    'failed' => '✕ Gagal',
+    'per_minute' => 'Job/mnt',
+    'last_job' => 'Job terakhir',
+    'last_error' => 'Error terakhir',
+    'feed' => 'Aktivitas terbaru',
+    'feed_empty' => 'Belum ada',
+    'missing' => 'direktori tidak ada',
+    'exit_code' => 'keluar :code',
+    'retry_in' => ':seconds dtk',
+    'status_error' => 'ERROR',
+    'status_warn' => 'PERINGATAN',
+    'background' => '(latar belakang)',
+    'started' => 'dev-mesh: :projects proyek x :services layanan berjalan. Tekan Ctrl+C untuk berhenti.',
+    'stopping' => 'Menghentikan layanan…',
+    'stopped' => 'dev-mesh: semua layanan berhenti.',
+    'crashed' => 'berhenti (keluar :code), mulai ulang dalam :seconds dtk',
+    'restarted' => 'dimulai ulang',
+];

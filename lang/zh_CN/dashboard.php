@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'uptime' => '运行时长',
+    'quit_hint' => 'q / Ctrl+C 退出',
+    'project' => '项目',
+    'done' => '✓ 完成',
+    'failed' => '✕ 失败',
+    'per_minute' => '任务/分',
+    'last_job' => '最近任务',
+    'last_error' => '最近错误',
+    'feed' => '最近活动',
+    'feed_empty' => '暂无记录',
+    'missing' => '目录不存在',
+    'exit_code' => '退出码 :code',
+    'retry_in' => ':seconds 秒',
+    'status_error' => '错误',
+    'status_warn' => '警告',
+    'background' => '(后台)',
+    'started' => 'dev-mesh：:projects 个项目 x :services 个服务运行中。按 Ctrl+C 停止。',
+    'stopping' => '正在停止服务…',
+    'stopped' => 'dev-mesh：所有服务已停止。',
+    'crashed' => '已停止（退出码 :code），:seconds 秒后重启',
+    'restarted' => '已重启',
+];
