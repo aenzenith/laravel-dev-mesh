@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/aenzenith/laravel-dev-mesh/compare/v1.0.0...v1.0.1) (2026-09-15)
+
+
+### Bug Fixes
+
+* **parser:** shorten scheduler command summary lines ([bbe3f0c](https://github.com/aenzenith/laravel-dev-mesh/commit/bbe3f0cec8c14868912132445cb9b3c163522b63))
+
 ## 1.0.0 (2026-09-15)
 
 
