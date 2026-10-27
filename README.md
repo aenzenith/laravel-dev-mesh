@@ -46,6 +46,18 @@ dashboard.
 - Laravel 12 or 13
 - macOS or Linux (`stty` and `ps` are used)
 
+### Windows
+
+Native Windows is not supported. Horizon itself needs `pcntl` and `posix`,
+which PHP does not provide on Windows, and so does this package: Composer
+refuses to install it there. The dashboard also relies on POSIX tools and
+signals (`env -i`, `stty`, `ps`, `SIGTERM`).
+
+Use [WSL 2](https://learn.microsoft.com/windows/wsl/install) instead: install
+PHP with `pcntl` and `posix` inside the Linux distribution, keep the projects
+on the Linux file system (e.g. `~/code`, not `/mnt/c`) and run the command
+from a WSL terminal.
+
 ## Installation
 
 ```bash

@@ -9,3 +9,4 @@
 /SECURITY.md        export-ignore
 /CONTRIBUTING.md    export-ignore
 /phpstan.neon.dist  export-ignore
+/CLAUDE.md          export-ignore
