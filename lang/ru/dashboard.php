@@ -2,7 +2,7 @@
 
 return [
     'uptime' => 'аптайм',
-    'quit_hint' => 'q / Ctrl+C для выхода',
+    'keys_hint' => '↑↓←→ выбор · r перезапуск · s стоп/старт · q выход',
     'project' => 'Проект',
     'done' => '✓ Готово',
     'failed' => '✕ Ошибки',
@@ -12,6 +12,9 @@ return [
     'feed' => 'Недавняя активность',
     'feed_empty' => 'Пока пусто',
     'missing' => 'нет каталога',
+    'state_restarting' => 'перезапуск…',
+    'state_stopping' => 'остановка…',
+    'state_stopped' => 'остановлен',
     'exit_code' => 'код :code',
     'retry_in' => ':seconds с',
     'status_error' => 'ОШИБКА',
@@ -22,4 +25,5 @@ return [
     'stopped' => 'dev-mesh: все сервисы остановлены.',
     'crashed' => 'остановлен (код :code), перезапуск через :seconds с',
     'restarted' => 'перезапущен',
+    'reloaded' => ':file изменён, перезапуск',
 ];

@@ -2,7 +2,7 @@
 
 return [
     'uptime' => 'अपटाइम',
-    'quit_hint' => 'q / Ctrl+C से बाहर निकलें',
+    'keys_hint' => '↑↓←→ चुनें · r पुनः आरंभ · s रोकें/शुरू करें · q बाहर निकलें',
     'project' => 'प्रोजेक्ट',
     'done' => '✓ पूर्ण',
     'failed' => '✕ विफल',
@@ -12,6 +12,9 @@ return [
     'feed' => 'हाल की गतिविधि',
     'feed_empty' => 'अभी कुछ नहीं',
     'missing' => 'डायरेक्टरी नहीं',
+    'state_restarting' => 'पुनः आरंभ हो रहा है…',
+    'state_stopping' => 'रुक रहा है…',
+    'state_stopped' => 'रुका हुआ',
     'exit_code' => 'एग्ज़िट :code',
     'retry_in' => ':seconds से',
     'status_error' => 'त्रुटि',
@@ -22,4 +25,5 @@ return [
     'stopped' => 'dev-mesh: सभी सेवाएँ रुक गईं।',
     'crashed' => 'रुक गया (एग्ज़िट :code), :seconds से में पुनः आरंभ',
     'restarted' => 'पुनः आरंभ हुआ',
+    'reloaded' => ':file बदली, पुनः आरंभ हो रहा है',
 ];

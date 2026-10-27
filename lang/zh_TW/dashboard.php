@@ -2,7 +2,7 @@
 
 return [
     'uptime' => '運行時間',
-    'quit_hint' => 'q / Ctrl+C 離開',
+    'keys_hint' => '↑↓←→ 選擇 · r 重新啟動 · s 停止/啟動 · q 離開',
     'project' => '專案',
     'done' => '✓ 完成',
     'failed' => '✕ 失敗',
@@ -12,6 +12,9 @@ return [
     'feed' => '最近活動',
     'feed_empty' => '尚無紀錄',
     'missing' => '目錄不存在',
+    'state_restarting' => '重新啟動中…',
+    'state_stopping' => '停止中…',
+    'state_stopped' => '已停止',
     'exit_code' => '結束碼 :code',
     'retry_in' => ':seconds 秒',
     'status_error' => '錯誤',
@@ -22,4 +25,5 @@ return [
     'stopped' => 'dev-mesh：所有服務已停止。',
     'crashed' => '已停止（結束碼 :code），:seconds 秒後重新啟動',
     'restarted' => '已重新啟動',
+    'reloaded' => ':file 已變更，正在重新啟動',
 ];

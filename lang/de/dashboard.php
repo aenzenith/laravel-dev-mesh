@@ -2,7 +2,7 @@
 
 return [
     'uptime' => 'Laufzeit',
-    'quit_hint' => 'q / Strg+C zum Beenden',
+    'keys_hint' => '↑↓←→ auswählen · r neu starten · s stoppen/starten · q beenden',
     'project' => 'Projekt',
     'done' => '✓ Fertig',
     'failed' => '✕ Fehler',
@@ -12,6 +12,9 @@ return [
     'feed' => 'Letzte Aktivität',
     'feed_empty' => 'Noch nichts',
     'missing' => 'kein Verzeichnis',
+    'state_restarting' => 'startet neu…',
+    'state_stopping' => 'stoppt…',
+    'state_stopped' => 'gestoppt',
     'exit_code' => 'Exit :code',
     'retry_in' => ':seconds s',
     'status_error' => 'FEHLER',
@@ -22,4 +25,5 @@ return [
     'stopped' => 'dev-mesh: alle Dienste gestoppt.',
     'crashed' => 'gestoppt (Exit :code), Neustart in :seconds s',
     'restarted' => 'neu gestartet',
+    'reloaded' => ':file geändert, Neustart',
 ];

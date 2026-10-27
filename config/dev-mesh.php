@@ -59,6 +59,34 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Restart on code changes
+    |--------------------------------------------------------------------------
+    |
+    | Workers keep the application in memory: after an edit Horizon and
+    | `queue:work` go on running the old code until they restart. Every
+    | project is polled for changes in these paths (relative to the project;
+    | directories are scanned for `.php` files) and its services are restarted
+    | once the files settle. `except` lists services left running. An empty
+    | `paths` turns watching off.
+    |
+    */
+
+    'watch' => [
+        'paths' => [
+            'app',
+            'config',
+            'lang',
+            'routes',
+            'bootstrap/app.php',
+            'bootstrap/providers.php',
+            '.env',
+            'composer.lock',
+        ],
+        'except' => [],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Environment
     |--------------------------------------------------------------------------
     |

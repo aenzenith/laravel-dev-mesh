@@ -2,7 +2,7 @@
 
 return [
     'uptime' => 'aktif',
-    'quit_hint' => 'q / Ctrl+C untuk keluar',
+    'keys_hint' => '↑↓←→ pilih · r mulai ulang · s hentikan/mulai · q keluar',
     'project' => 'Proyek',
     'done' => '✓ Selesai',
     'failed' => '✕ Gagal',
@@ -12,6 +12,9 @@ return [
     'feed' => 'Aktivitas terbaru',
     'feed_empty' => 'Belum ada',
     'missing' => 'direktori tidak ada',
+    'state_restarting' => 'memulai ulang…',
+    'state_stopping' => 'menghentikan…',
+    'state_stopped' => 'dihentikan',
     'exit_code' => 'keluar :code',
     'retry_in' => ':seconds dtk',
     'status_error' => 'ERROR',
@@ -22,4 +25,5 @@ return [
     'stopped' => 'dev-mesh: semua layanan berhenti.',
     'crashed' => 'berhenti (keluar :code), mulai ulang dalam :seconds dtk',
     'restarted' => 'dimulai ulang',
+    'reloaded' => ':file berubah, memulai ulang',
 ];

@@ -20,22 +20,21 @@ it('returns at once when no key is waiting and keeps the stream blocking', funct
 
     $startedAt = microtime(true);
 
-    expect($keyboard->quitPressed())->toBeFalse()
+    expect($keyboard->pressed())->toBe([])
         ->and(microtime(true) - $startedAt)->toBeLessThan(0.05)
         ->and(stream_get_meta_data($input)['blocked'])->toBeTrue();
 
     fclose($terminal);
 });
 
-it('reacts to q in either case and ignores other keys', function () {
+it('reports typed keys and arrow keys in order and drops other escape sequences', function () {
     [$input, $terminal] = keyboardPair();
     $keyboard = new MeshKeyboard($input);
 
-    fwrite($terminal, 'x');
-    expect($keyboard->quitPressed())->toBeFalse();
+    fwrite($terminal, "r\e[A\eOD\e[3~\eQ");
 
-    fwrite($terminal, 'Q');
-    expect($keyboard->quitPressed())->toBeTrue();
+    expect($keyboard->pressed())->toBe(['r', 'up', 'left', 'Q'])
+        ->and($keyboard->pressed())->toBe([]);
 });
 
 it('never switches the terminal streams to non-blocking mode', function () {

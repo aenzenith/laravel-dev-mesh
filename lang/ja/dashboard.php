@@ -2,7 +2,7 @@
 
 return [
     'uptime' => '稼働',
-    'quit_hint' => 'q / Ctrl+C で終了',
+    'keys_hint' => '↑↓←→ 選択 · r 再起動 · s 停止/開始 · q 終了',
     'project' => 'プロジェクト',
     'done' => '✓ 完了',
     'failed' => '✕ 失敗',
@@ -12,6 +12,9 @@ return [
     'feed' => '最近の活動',
     'feed_empty' => 'まだありません',
     'missing' => 'ディレクトリなし',
+    'state_restarting' => '再起動中…',
+    'state_stopping' => '停止中…',
+    'state_stopped' => '停止済み',
     'exit_code' => '終了コード :code',
     'retry_in' => ':seconds 秒',
     'status_error' => 'エラー',
@@ -22,4 +25,5 @@ return [
     'stopped' => 'dev-mesh: すべてのサービスを停止しました。',
     'crashed' => '停止 (終了コード :code)、:seconds 秒後に再起動',
     'restarted' => '再起動しました',
+    'reloaded' => ':file が変更されたため再起動中',
 ];

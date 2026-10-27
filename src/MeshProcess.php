@@ -24,6 +24,14 @@ final class MeshProcess
 
     public int $restarts = 0;
 
+    /** Stopped from the dashboard (`s`): not restarted until started again. */
+    public bool $held = false;
+
+    /** When the dashboard asked the running child to stop; null otherwise. */
+    public ?float $stopRequestedAt = null;
+
+    private bool $restartAfterStop = false;
+
     /**
      * @param  list<string>  $command
      */
@@ -80,6 +88,9 @@ final class MeshProcess
 
         $this->startedAt = $now;
         $this->restartAt = null;
+        $this->held = false;
+        $this->stopRequestedAt = null;
+        $this->restartAfterStop = false;
     }
 
     /**
@@ -116,6 +127,38 @@ final class MeshProcess
         $this->lastExitCode = $this->process?->getExitCode();
         $this->startedAt = null;
         $this->restartAt = $restartAt;
+    }
+
+    /**
+     * Stops the child on purpose, to start it again (`r`, a code change) or
+     * to hold it (`s`), so its exit is not taken for a crash. A pending
+     * crash restart is cancelled; a child that is down is left as it is.
+     */
+    public function requestStop(float $now, bool $restart): void
+    {
+        $this->restartAt = null;
+        $this->held = ! $restart;
+        $this->restartAfterStop = $restart;
+
+        if ($this->isRunning()) {
+            $this->stopRequestedAt ??= $now;
+            $this->terminate();
+        }
+    }
+
+    /**
+     * Settles the exit of a child stopped through {@see requestStop()};
+     * true when it should start again right away.
+     */
+    public function settleRequestedStop(): bool
+    {
+        $restart = $this->restartAfterStop;
+
+        $this->startedAt = null;
+        $this->stopRequestedAt = null;
+        $this->restartAfterStop = false;
+
+        return $restart;
     }
 
     /**

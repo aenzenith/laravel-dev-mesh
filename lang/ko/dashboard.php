@@ -2,7 +2,7 @@
 
 return [
     'uptime' => '가동',
-    'quit_hint' => 'q / Ctrl+C 종료',
+    'keys_hint' => '↑↓←→ 선택 · r 재시작 · s 중지/시작 · q 종료',
     'project' => '프로젝트',
     'done' => '✓ 완료',
     'failed' => '✕ 실패',
@@ -12,6 +12,9 @@ return [
     'feed' => '최근 활동',
     'feed_empty' => '아직 없음',
     'missing' => '디렉터리 없음',
+    'state_restarting' => '재시작 중…',
+    'state_stopping' => '중지 중…',
+    'state_stopped' => '중지됨',
     'exit_code' => '종료 코드 :code',
     'retry_in' => ':seconds초',
     'status_error' => '오류',
@@ -22,4 +25,5 @@ return [
     'stopped' => 'dev-mesh: 모든 서비스가 중지되었습니다.',
     'crashed' => '중지됨 (종료 코드 :code), :seconds초 후 재시작',
     'restarted' => '재시작됨',
+    'reloaded' => ':file 변경됨, 재시작 중',
 ];

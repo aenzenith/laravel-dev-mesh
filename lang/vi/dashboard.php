@@ -2,7 +2,7 @@
 
 return [
     'uptime' => 'thời gian chạy',
-    'quit_hint' => 'q / Ctrl+C để thoát',
+    'keys_hint' => '↑↓←→ chọn · r khởi động lại · s dừng/chạy · q thoát',
     'project' => 'Dự án',
     'done' => '✓ Xong',
     'failed' => '✕ Lỗi',
@@ -12,6 +12,9 @@ return [
     'feed' => 'Hoạt động gần đây',
     'feed_empty' => 'Chưa có gì',
     'missing' => 'không có thư mục',
+    'state_restarting' => 'đang khởi động lại…',
+    'state_stopping' => 'đang dừng…',
+    'state_stopped' => 'đã dừng',
     'exit_code' => 'mã thoát :code',
     'retry_in' => ':seconds giây',
     'status_error' => 'LỖI',
@@ -22,4 +25,5 @@ return [
     'stopped' => 'dev-mesh: tất cả dịch vụ đã dừng.',
     'crashed' => 'đã dừng (mã thoát :code), khởi động lại sau :seconds giây',
     'restarted' => 'đã khởi động lại',
+    'reloaded' => ':file đã thay đổi, đang khởi động lại',
 ];

@@ -2,7 +2,7 @@
 
 return [
     'uptime' => 'uptime',
-    'quit_hint' => 'q / Ctrl+C to quit',
+    'keys_hint' => '↑↓←→ select · r restart · s stop/start · q quit',
     'project' => 'Project',
     'done' => '✓ Done',
     'failed' => '✕ Failed',
@@ -12,6 +12,9 @@ return [
     'feed' => 'Recent activity',
     'feed_empty' => 'Nothing yet',
     'missing' => 'no directory',
+    'state_restarting' => 'restarting…',
+    'state_stopping' => 'stopping…',
+    'state_stopped' => 'stopped',
     'exit_code' => 'exit :code',
     'retry_in' => ':seconds s',
     'status_error' => 'ERROR',
@@ -22,4 +25,5 @@ return [
     'stopped' => 'dev-mesh: all services stopped.',
     'crashed' => 'stopped (exit :code), restarting in :seconds s',
     'restarted' => 'restarted',
+    'reloaded' => ':file changed, restarting',
 ];

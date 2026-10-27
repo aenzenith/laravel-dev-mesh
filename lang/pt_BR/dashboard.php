@@ -2,7 +2,7 @@
 
 return [
     'uptime' => 'ativo',
-    'quit_hint' => 'q / Ctrl+C para sair',
+    'keys_hint' => '↑↓←→ selecionar · r reiniciar · s parar/iniciar · q sair',
     'project' => 'Projeto',
     'done' => '✓ Feitos',
     'failed' => '✕ Falhas',
@@ -12,6 +12,9 @@ return [
     'feed' => 'Atividade recente',
     'feed_empty' => 'Nada ainda',
     'missing' => 'sem diretório',
+    'state_restarting' => 'reiniciando…',
+    'state_stopping' => 'parando…',
+    'state_stopped' => 'parado',
     'exit_code' => 'saída :code',
     'retry_in' => ':seconds s',
     'status_error' => 'ERRO',
@@ -22,4 +25,5 @@ return [
     'stopped' => 'dev-mesh: todos os serviços parados.',
     'crashed' => 'parou (saída :code), reiniciando em :seconds s',
     'restarted' => 'reiniciado',
+    'reloaded' => ':file alterado, reiniciando',
 ];

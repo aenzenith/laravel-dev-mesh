@@ -2,7 +2,7 @@
 
 return [
     'uptime' => 'çalışma',
-    'quit_hint' => 'q / Ctrl+C çıkış',
+    'keys_hint' => '↑↓←→ seç · r yeniden başlat · s durdur/başlat · q çık',
     'project' => 'Proje',
     'done' => '✓ İş',
     'failed' => '✕ Hata',
@@ -12,6 +12,9 @@ return [
     'feed' => 'Son işlemler',
     'feed_empty' => 'Henüz işlem yok',
     'missing' => 'dizin yok',
+    'state_restarting' => 'yeniden başlıyor…',
+    'state_stopping' => 'duruyor…',
+    'state_stopped' => 'durduruldu',
     'exit_code' => 'çıkış :code',
     'retry_in' => ':seconds sn',
     'status_error' => 'HATA',
@@ -22,4 +25,5 @@ return [
     'stopped' => 'dev-mesh: tüm servisler durdu.',
     'crashed' => 'durdu (çıkış :code), :seconds sn sonra yeniden başlatılacak',
     'restarted' => 'yeniden başlatıldı',
+    'reloaded' => ':file değişti, yeniden başlatılıyor',
 ];

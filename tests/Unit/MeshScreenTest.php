@@ -110,7 +110,7 @@ it('renders the labels of the given language', function () {
     expect(meshRow($frame, 'Project'))->toMatch('/Project\s+│\s+horizon\s+│\s+schedule\s+│\s+✓ Done\s+│\s+✕ Failed\s+│\s+Jobs\/min\s+│\s+Last job\s+│\s+Last error/u')
         ->and(meshRow($frame, 'payments-api'))->toContain('✕ exit 255 · 4 s ↻1 · 17:41')
         ->and(meshRow($frame, 'legacy-admin'))->toContain('— no directory')
-        ->and($frame)->toContain('q / Ctrl+C to quit')
+        ->and($frame)->toContain('↑↓←→ select · r restart · s stop/start · q quit')
         ->and($frame)->toContain('Nothing yet');
 });
 

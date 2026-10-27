@@ -13,23 +13,47 @@ namespace Aenzenith\DevMesh;
  */
 final class MeshKeyboard
 {
+    /** Final byte of an arrow key's escape sequence (`ESC [ A`, `ESC O A`). */
+    private const ARROWS = ['A' => 'up', 'B' => 'down', 'C' => 'right', 'D' => 'left'];
+
     /**
      * @param  resource  $input
      */
     public function __construct(private $input) {}
 
-    public function quitPressed(): bool
+    /**
+     * Keys pressed since the last call, oldest first: the arrow keys as
+     * `up`, `down`, `left` and `right`, any other key as the character it
+     * types. Other escape sequences (function keys, Esc) are dropped.
+     *
+     * @return list<string>
+     */
+    public function pressed(): array
     {
         $read = [$this->input];
         $write = null;
         $except = null;
 
         if ((int) @stream_select($read, $write, $except, 0) < 1) {
-            return false;
+            return [];
         }
 
         $bytes = fread($this->input, 64);
 
-        return is_string($bytes) && str_contains(strtolower($bytes), 'q');
+        if (! is_string($bytes) || preg_match_all('/\e[\[O][0-9;]*[A-Za-z~]|\e|./s', $bytes, $matches) === false) {
+            return [];
+        }
+
+        $keys = [];
+
+        foreach ($matches[0] as $key) {
+            if (! str_starts_with($key, "\e")) {
+                $keys[] = $key;
+            } elseif (isset(self::ARROWS[substr($key, -1)])) {
+                $keys[] = self::ARROWS[substr($key, -1)];
+            }
+        }
+
+        return $keys;
     }
 }

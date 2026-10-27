@@ -2,7 +2,7 @@
 
 return [
     'uptime' => 'uptime',
-    'quit_hint' => 'q / Ctrl+C om te stoppen',
+    'keys_hint' => '↑↓←→ selecteren · r herstarten · s stoppen/starten · q afsluiten',
     'project' => 'Project',
     'done' => '✓ Klaar',
     'failed' => '✕ Mislukt',
@@ -12,6 +12,9 @@ return [
     'feed' => 'Recente activiteit',
     'feed_empty' => 'Nog niets',
     'missing' => 'geen map',
+    'state_restarting' => 'herstarten…',
+    'state_stopping' => 'stoppen…',
+    'state_stopped' => 'gestopt',
     'exit_code' => 'exit :code',
     'retry_in' => ':seconds s',
     'status_error' => 'FOUT',
@@ -22,4 +25,5 @@ return [
     'stopped' => 'dev-mesh: alle services gestopt.',
     'crashed' => 'gestopt (exit :code), herstart over :seconds s',
     'restarted' => 'herstart',
+    'reloaded' => ':file gewijzigd, herstarten',
 ];

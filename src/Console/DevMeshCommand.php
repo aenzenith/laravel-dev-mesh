@@ -8,6 +8,7 @@ use Aenzenith\DevMesh\MeshOutputParser;
 use Aenzenith\DevMesh\MeshProcess;
 use Aenzenith\DevMesh\MeshProjectStats;
 use Aenzenith\DevMesh\MeshScreen;
+use Aenzenith\DevMesh\MeshWatcher;
 use Aenzenith\DevMesh\ProcessTreeMemory;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Command\SignalableCommandInterface;
@@ -21,8 +22,10 @@ use Symfony\Component\Console\Terminal;
  * memory, restart history) and the project's totals (finished / failed work,
  * throughput, latest job, latest error), plus a feed of the latest events.
  *
- * A crashed service is restarted with a growing back-off. Without a TTY
- * (piped, CI) the dashboard is skipped and child output is printed as
+ * A crashed service is restarted with a growing back-off; a code change
+ * restarts the services of its project. The arrow keys select a cell, `r`
+ * restarts its service and `s` stops or starts it. Without a TTY (piped, CI)
+ * the dashboard is skipped and child output is printed as
  * `[project|service] line`. Blocks until `q` or Ctrl+C, which stops every
  * child.
  *
@@ -37,7 +40,18 @@ class DevMeshCommand extends Command implements SignalableCommandInterface
 
     private const MEMORY_SAMPLE_SECONDS = 2;
 
+    private const WATCH_SECONDS = 1;
+
+    /** Grace period for SIGTERM before a child is killed. */
+    private const STOP_SECONDS = 15;
+
     private bool $stopping = false;
+
+    /** @var array<string, array<string, MeshProcess>> project => service => process */
+    private array $grid = [];
+
+    /** @var array{0: int, 1: int} project and service index of the selected cell */
+    private array $selected = [0, 0];
 
     /** @var list<MeshEvent> newest first */
     private array $events = [];
@@ -113,6 +127,7 @@ class DevMeshCommand extends Command implements SignalableCommandInterface
             $this->stringList('dev-mesh.environment.keep_prefixes'),
         );
         $interactive = stream_isatty(STDOUT) && stream_isatty(STDIN);
+        $watchers = $this->watchers($projects);
         $meshStartedAt = microtime(true);
 
         foreach (array_keys($projects) as $project) {
@@ -134,6 +149,7 @@ class DevMeshCommand extends Command implements SignalableCommandInterface
 
         try {
             $lastFrameAt = 0.0;
+            $watchedAt = $meshStartedAt;
 
             while (! $this->stopping) {
                 $now = microtime(true);
@@ -142,9 +158,17 @@ class DevMeshCommand extends Command implements SignalableCommandInterface
                     $this->supervise($process, $parser, $environment, $now, $interactive);
                 }
 
+                if ($now - $watchedAt >= self::WATCH_SECONDS) {
+                    $this->reloadChanged($watchers, $environment, $now);
+                    $watchedAt = $now;
+                }
+
                 if ($interactive) {
-                    if ($keyboard->quitPressed()) {
-                        $this->stopping = true;
+                    $keys = $keyboard->pressed();
+
+                    if ($keys !== []) {
+                        $this->handleKeys($keys, $environment, $now);
+                        $lastFrameAt = 0.0;
                     }
 
                     if ($now - $lastFrameAt >= 0.5) {
@@ -206,11 +230,134 @@ class DevMeshCommand extends Command implements SignalableCommandInterface
 
         foreach ($projects as $project => $path) {
             foreach ($services as $service => $command) {
-                $processes[] = new MeshProcess($project, $service, $path, $command);
+                $processes[] = $this->grid[$project][$service] = new MeshProcess($project, $service, $path, $command);
             }
         }
 
         return $processes;
+    }
+
+    /**
+     * @param  array<string, string>  $projects
+     * @return array<string, MeshWatcher>
+     */
+    private function watchers(array $projects): array
+    {
+        $paths = $this->stringList('dev-mesh.watch.paths');
+        $watchers = [];
+
+        foreach ($projects as $project => $path) {
+            if ($paths !== [] && is_dir($path)) {
+                $watchers[$project] = new MeshWatcher($path, $paths);
+            }
+        }
+
+        return $watchers;
+    }
+
+    /**
+     * Restarts the services of every project whose code changed, except the
+     * ones listed in `dev-mesh.watch.except` and the ones stopped by hand.
+     *
+     * @param  array<string, MeshWatcher>  $watchers
+     * @param  list<string>  $environment
+     */
+    private function reloadChanged(array $watchers, array $environment, float $now): void
+    {
+        $except = $this->stringList('dev-mesh.watch.except');
+
+        foreach ($watchers as $project => $watcher) {
+            $file = $watcher->changed();
+
+            if ($file === null) {
+                continue;
+            }
+
+            foreach ($this->grid[$project] ?? [] as $service => $process) {
+                if (! $process->held && ! in_array($service, $except, true) && $this->restartService($process, $environment, $now)) {
+                    $this->record(new MeshEvent(date('H:i:s'), $process->project, $service, $this->trans('reloaded', ['file' => $file]), MeshEvent::WARN), $now);
+                }
+            }
+        }
+    }
+
+    /**
+     * @param  list<string>  $keys
+     * @param  list<string>  $environment
+     */
+    private function handleKeys(array $keys, array $environment, float $now): void
+    {
+        $projects = array_map(strval(...), array_keys($this->grid));
+        $services = array_map(strval(...), array_keys(array_values($this->grid)[0] ?? []));
+        [$row, $column] = $this->selected;
+
+        foreach ($keys as $key) {
+            $key = strtolower($key);
+
+            [$rowStep, $columnStep] = match ($key) {
+                'up', 'k' => [-1, 0],
+                'down', 'j' => [1, 0],
+                'left', 'h' => [0, -1],
+                'right', 'l' => [0, 1],
+                default => [0, 0],
+            };
+
+            $row = max(0, min(count($projects) - 1, $row + $rowStep));
+            $column = max(0, min(count($services) - 1, $column + $columnStep));
+            $process = $this->grid[$projects[$row] ?? ''][$services[$column] ?? ''] ?? null;
+
+            if ($key === 'q') {
+                $this->stopping = true;
+            } elseif ($key === 'r' && $process !== null) {
+                $this->restartService($process, $environment, $now);
+            } elseif ($key === 's' && $process !== null) {
+                $this->toggleService($process, $environment, $now);
+            }
+        }
+
+        $this->selected = [$row, $column];
+    }
+
+    /**
+     * Restarts a running service gracefully and starts a stopped or crashed
+     * one at once; false when there is nothing to start.
+     *
+     * @param  list<string>  $environment
+     */
+    private function restartService(MeshProcess $process, array $environment, float $now): bool
+    {
+        if ($this->stopping || ! $process->exists()) {
+            return false;
+        }
+
+        if ($process->isRunning()) {
+            $process->requestStop($now, restart: true);
+        } else {
+            $process->start($environment, $now);
+        }
+
+        return true;
+    }
+
+    /**
+     * Holds a service (no restarts until started again) or starts a held one.
+     *
+     * @param  list<string>  $environment
+     */
+    private function toggleService(MeshProcess $process, array $environment, float $now): void
+    {
+        if ($this->stopping || ! $process->exists()) {
+            return;
+        }
+
+        if (! $process->held) {
+            $process->requestStop($now, restart: false);
+        } elseif ($process->isRunning()) {
+            // Still shutting down: start it again as soon as it exits.
+            $process->requestStop($now, restart: true);
+        } else {
+            $process->start($environment, $now);
+        }
     }
 
     /**
@@ -234,6 +381,20 @@ class DevMeshCommand extends Command implements SignalableCommandInterface
             if ($event !== null) {
                 $this->record($event, $now);
             }
+        }
+
+        if ($exited && $process->stopRequestedAt !== null) {
+            if ($process->settleRequestedStop() && ! $this->stopping) {
+                $process->start($environment, $now);
+            }
+
+            return;
+        }
+
+        if ($process->stopRequestedAt !== null && $now - $process->stopRequestedAt >= self::STOP_SECONDS) {
+            $process->kill();
+
+            return;
         }
 
         if ($exited) {
@@ -280,7 +441,13 @@ class DevMeshCommand extends Command implements SignalableCommandInterface
             $pid = $process->pid();
 
             $matrix[$process->project][$process->service] = [
-                'state' => ! $process->exists() ? 'missing' : ($pid !== null ? 'running' : 'down'),
+                'state' => match (true) {
+                    ! $process->exists() => 'missing',
+                    $process->stopRequestedAt !== null => $process->held ? 'stopping' : 'restarting',
+                    $pid !== null => 'running',
+                    $process->held => 'stopped',
+                    default => 'down',
+                },
                 'uptime' => $pid !== null && $process->startedAt !== null ? (int) ($now - $process->startedAt) : null,
                 'restarts' => $process->restarts,
                 'retryIn' => $process->restartAt !== null ? max(0, (int) ceil($process->restartAt - $now)) : null,
@@ -301,7 +468,8 @@ class DevMeshCommand extends Command implements SignalableCommandInterface
         ], $this->stats);
 
         $terminal = new Terminal;
-        $frame = $screen->render($services, $matrix, $summaries, $this->events, $terminal->getWidth(), $terminal->getHeight(), date('H:i:s'), (int) ($now - $meshStartedAt));
+        $selected = [(string) (array_keys($this->grid)[$this->selected[0]] ?? ''), $services[$this->selected[1]] ?? ''];
+        $frame = $screen->render($services, $matrix, $summaries, $this->events, $terminal->getWidth(), $terminal->getHeight(), date('H:i:s'), (int) ($now - $meshStartedAt), $selected);
 
         $this->writeRaw("\e[H".str_replace("\n", "\e[K\n", $frame)."\e[K\e[J");
     }
@@ -315,7 +483,7 @@ class DevMeshCommand extends Command implements SignalableCommandInterface
             $process->terminate();
         }
 
-        $deadline = microtime(true) + 15;
+        $deadline = microtime(true) + self::STOP_SECONDS;
 
         while (microtime(true) < $deadline && array_filter($processes, fn (MeshProcess $process): bool => $process->isRunning()) !== []) {
             usleep(100_000);

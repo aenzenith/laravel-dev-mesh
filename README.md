@@ -12,7 +12,7 @@ or more Laravel projects from a single command, with a live terminal
 dashboard.
 
 ```
- Shop mesh  ·  17:42:10  ·  uptime 01:12:33                                                  q / Ctrl+C to quit
+ Shop mesh  ·  17:42:10  ·  uptime 01:12:33                     ↑↓←→ select · r restart · s stop/start · q quit
 
 ┌──────────────┬───────────────────────────────┬────────────────────────┬────────┬──────────┬──────────┬──────────────────────┬──────────────────────┐
 │ Project      │ horizon                       │ schedule               │ ✓ Done │ ✕ Failed │ Jobs/min │ Last job             │ Last error           │
@@ -34,6 +34,11 @@ dashboard.
   five minutes, the latest job and the latest error, parsed from the output of
   queue workers and `schedule:work`.
 - **Self-healing:** a crashed service is restarted after 1, 2, 4 … seconds.
+- **Restart on code changes:** Horizon and `queue:work` keep the application
+  in memory; when a file in `app`, `config`, `routes` … changes, the project's
+  services are restarted so they run the new code.
+- **Keyboard controls:** select a cell with the arrow keys, restart its
+  service with `r`, stop or start it with `s`.
 - **Isolated environments:** every service starts with `env -i`, so the
   variables loaded from the dashboard application's `.env` never leak into a
   sibling project.
@@ -87,6 +92,13 @@ return [
         'schedule' => ['php', 'artisan', 'schedule:work'],
     ],
 
+    // restart a project's services when its code changes; [] paths turns it off
+    'watch' => [
+        'paths' => ['app', 'config', 'lang', 'routes', 'bootstrap/app.php',
+            'bootstrap/providers.php', '.env', 'composer.lock'],
+        'except' => [], // services left running, e.g. ['schedule']
+    ],
+
     // variables passed through `env -i`
     'environment' => [
         'keep' => ['HOME', 'PATH', 'USER', 'SHELL', 'TMPDIR', 'TERM', 'LANG'],
@@ -106,8 +118,40 @@ holds the certificate authority for `.test` TLS from those variables.
 php artisan dev-mesh
 ```
 
-Press `q` or `Ctrl+C` to stop every service. Set `DEV_MESH_COMMAND` (or
-`command` in the config) to use another name, e.g. `dev`.
+Set `DEV_MESH_COMMAND` (or `command` in the config) to use another name, e.g.
+`dev`.
+
+### Keys
+
+| Key                 | Action                                               |
+|---------------------|------------------------------------------------------|
+| `↑` `↓` / `k` `j`   | select a project                                     |
+| `←` `→` / `h` `l`   | select a service                                     |
+| `r`                 | restart the selected service (starts it if it is down) |
+| `s`                 | stop the selected service, or start it again         |
+| `q` / `Ctrl+C`      | stop every service and quit                          |
+
+A restart is graceful: the service gets `SIGTERM` and is killed only if it is
+still running after 15 seconds, so Horizon finishes the jobs it is working on.
+A service stopped with `s` stays down (no crash restarts, no reloads) until
+you start it again.
+
+### Restart on code changes
+
+Horizon and `queue:work` boot the application once and keep it in memory, so
+an edited job goes on running its old code. The dashboard polls every project
+once a second for changes in `watch.paths` and restarts the project's
+services once the files settle, so a branch checkout restarts them once, not
+per file. Directories are scanned for `.php` files only (a SQLite database or
+a log next to the code never triggers a restart); files listed by name, such
+as `.env`, are watched whatever they contain. A crashed service waiting for
+its next retry starts at once, so fixing the error brings it back
+immediately.
+
+`schedule:work` starts a fresh `schedule:run` every minute, but it does keep
+the variables of the `.env` it booted with and hands them to every run, so it
+is restarted too. Put a service in `watch.except` to leave it running, and
+set `watch.paths` to `[]` to turn watching off.
 
 ## Translations
 

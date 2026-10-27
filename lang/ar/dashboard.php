@@ -2,7 +2,7 @@
 
 return [
     'uptime' => 'مدة التشغيل',
-    'quit_hint' => 'q / Ctrl+C للخروج',
+    'keys_hint' => '↑↓←→ تحديد · r إعادة التشغيل · s إيقاف/تشغيل · q خروج',
     'project' => 'المشروع',
     'done' => '✓ منجز',
     'failed' => '✕ فاشل',
@@ -12,6 +12,9 @@ return [
     'feed' => 'النشاط الأخير',
     'feed_empty' => 'لا شيء بعد',
     'missing' => 'لا يوجد مجلد',
+    'state_restarting' => 'جارٍ إعادة التشغيل…',
+    'state_stopping' => 'جارٍ الإيقاف…',
+    'state_stopped' => 'متوقف',
     'exit_code' => 'خروج :code',
     'retry_in' => ':seconds ث',
     'status_error' => 'خطأ',
@@ -22,4 +25,5 @@ return [
     'stopped' => 'dev-mesh: تم إيقاف جميع الخدمات.',
     'crashed' => 'توقف (خروج :code)، إعادة التشغيل خلال :seconds ث',
     'restarted' => 'أُعيد تشغيله',
+    'reloaded' => 'تغيّر :file، جارٍ إعادة التشغيل',
 ];

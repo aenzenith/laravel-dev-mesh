@@ -14,7 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * cell per service plus the project's totals, the newest feed events below,
  * clipped to the terminal.
  *
- * @phpstan-type MeshCell array{state: 'running'|'down'|'missing', uptime: int|null, restarts: int, retryIn: int|null, pid: int|null, memoryKb: int|null, lastExitCode: int|null, lastRestartAt: string|null}
+ * @phpstan-type MeshCell array{state: 'running'|'restarting'|'stopping'|'stopped'|'down'|'missing', uptime: int|null, restarts: int, retryIn: int|null, pid: int|null, memoryKb: int|null, lastExitCode: int|null, lastRestartAt: string|null}
  * @phpstan-type MeshSummary array{done: int, failed: int, perMinute: float, lastJob: MeshEvent|null, lastError: MeshEvent|null}
  */
 final class MeshScreen
@@ -35,17 +35,18 @@ final class MeshScreen
      * @param  array<string, array<string, MeshCell>>  $matrix  project => service => cell
      * @param  array<string, MeshSummary>  $summaries  project => totals
      * @param  list<MeshEvent>  $events  newest first
+     * @param  array{0: string, 1: string}|null  $selected  project and service of the highlighted cell
      */
-    public function render(array $services, array $matrix, array $summaries, array $events, int $width, int $height, string $clock, int $meshUptime): string
+    public function render(array $services, array $matrix, array $summaries, array $events, int $width, int $height, string $clock, int $meshUptime, ?array $selected = null): string
     {
         $output = new BufferedOutput(OutputInterface::VERBOSITY_NORMAL, true);
         $formatter = $output->getFormatter();
 
         $title = ' <options=bold>'.$this->literal($this->title).'</>  <fg=gray>·</>  '.$clock
             .'  <fg=gray>·  '.$this->literal($this->label('uptime')).'</> '.$this->clock($meshUptime);
-        $hint = '<fg=gray>'.$this->literal($this->label('quit_hint')).'</> ';
+        $hint = '<fg=gray>'.$this->literal($this->label('keys_hint')).'</> ';
         $gap = $width - Helper::width(Helper::removeDecoration($formatter, $title.$hint));
-        $output->writeln($title.str_repeat(' ', max(1, $gap)).$hint);
+        $output->writeln($gap >= 1 ? $title.str_repeat(' ', $gap).$hint : $title);
         $output->writeln('');
 
         $headers = array_map($this->literal(...), [
@@ -60,7 +61,7 @@ final class MeshScreen
         foreach ($matrix as $project => $cells) {
             $rows[$project] = [
                 $this->literal($project),
-                ...array_map(fn (string $service): string => $this->cell($cells[$service] ?? null), $services),
+                ...array_map(fn (string $service): string => $this->highlight($this->cell($cells[$service] ?? null), [(string) $project, $service] === $selected), $services),
                 ...$this->counters($summaries[$project] ?? null),
             ];
         }
@@ -127,11 +128,24 @@ final class MeshScreen
                 .($cell['pid'] !== null ? " <fg=gray>{$cell['pid']}</>" : '')
                 .($cell['memoryKb'] !== null ? ' '.$this->megabytes($cell['memoryKb']) : '')
                 .$restarts,
+            'restarting' => '<fg=yellow>● '.$this->literal($this->label('state_restarting')).'</>'.$restarts,
+            'stopping' => '<fg=yellow>● '.$this->literal($this->label('state_stopping')).'</>'.$restarts,
+            'stopped' => '<fg=gray>■ '.$this->literal($this->label('state_stopped')).'</>'.$restarts,
             'down' => '<fg=red>✕ '.$this->literal($this->label('exit_code', ['code' => $cell['lastExitCode'] ?? '?'])).'</>'
                 .($cell['retryIn'] !== null ? ' <fg=gray>· '.$this->literal($this->label('retry_in', ['seconds' => $cell['retryIn']])).'</>' : '')
                 .$restarts,
             'missing' => '<fg=gray>— '.$this->literal($this->label('missing')).'</>',
         };
+    }
+
+    /**
+     * Reverse video around the selected cell, as raw codes: the formatter
+     * does not nest styles, so a `<options=reverse>` tag would be lost inside
+     * every coloured part of the cell. Each part resets only its own colour.
+     */
+    private function highlight(string $cell, bool $selected): string
+    {
+        return $selected ? "\e[7m{$cell}\e[27m" : $cell;
     }
 
     /**
