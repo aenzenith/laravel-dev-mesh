@@ -1,8 +1,11 @@
 # Laravel Dev Mesh
 
+[![Packagist Version](https://img.shields.io/packagist/v/aenzenith/laravel-dev-mesh)](https://packagist.org/packages/aenzenith/laravel-dev-mesh)
+[![Total Downloads](https://img.shields.io/packagist/dt/aenzenith/laravel-dev-mesh)](https://packagist.org/packages/aenzenith/laravel-dev-mesh/stats)
+[![PHP Version](https://img.shields.io/packagist/dependency-v/aenzenith/laravel-dev-mesh/php)](https://packagist.org/packages/aenzenith/laravel-dev-mesh)
+[![Laravel](https://img.shields.io/badge/Laravel-12%20%E2%80%93%2013-FF2D20?logo=laravel&logoColor=white)](https://laravel.com)
 [![Tests](https://github.com/aenzenith/laravel-dev-mesh/actions/workflows/tests.yml/badge.svg)](https://github.com/aenzenith/laravel-dev-mesh/actions/workflows/tests.yml)
-[![Latest Version](https://img.shields.io/packagist/v/aenzenith/laravel-dev-mesh.svg)](https://packagist.org/packages/aenzenith/laravel-dev-mesh)
-[![License](https://img.shields.io/packagist/l/aenzenith/laravel-dev-mesh.svg)](https://packagist.org/packages/aenzenith/laravel-dev-mesh)
+[![License](https://img.shields.io/packagist/l/aenzenith/laravel-dev-mesh)](LICENSE)
 
 Run Horizon, the scheduler and any other long-running artisan service of one
 or more Laravel projects from a single command, with a live terminal
