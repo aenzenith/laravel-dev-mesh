@@ -41,7 +41,7 @@ body:
       label: Steps to reproduce
       placeholder: |
         1. Configure `dev-mesh.projects` with ...
-        2. Run `php artisan dev`
+        2. Run `php artisan dev-mesh`
         3. ...
     validations:
       required: true

@@ -52,8 +52,8 @@ class DevMeshCommand extends Command implements SignalableCommandInterface
 
     public function __construct()
     {
-        $name = config('dev-mesh.command', 'dev');
-        $this->signature = is_string($name) && $name !== '' ? $name : 'dev';
+        $name = config('dev-mesh.command', 'dev-mesh');
+        $this->signature = is_string($name) && $name !== '' ? $name : 'dev-mesh';
 
         parent::__construct();
     }

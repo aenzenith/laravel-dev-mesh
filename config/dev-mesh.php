@@ -7,11 +7,11 @@ return [
     | Command name
     |--------------------------------------------------------------------------
     |
-    | The artisan command that opens the dashboard: `php artisan dev`.
+    | The artisan command that opens the dashboard: `php artisan dev-mesh`.
     |
     */
 
-    'command' => env('DEV_MESH_COMMAND', 'dev'),
+    'command' => env('DEV_MESH_COMMAND', 'dev-mesh'),
 
     /*
     |--------------------------------------------------------------------------

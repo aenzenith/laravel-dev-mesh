@@ -4,8 +4,8 @@ use Aenzenith\DevMesh\Console\DevMeshCommand;
 use Illuminate\Support\Facades\Artisan;
 
 it('registers the dashboard command under the configured name', function () {
-    expect(Artisan::all())->toHaveKey('dev')
-        ->and(Artisan::all()['dev'])->toBeInstanceOf(DevMeshCommand::class);
+    expect(Artisan::all())->toHaveKey('dev-mesh')
+        ->and(Artisan::all()['dev-mesh'])->toBeInstanceOf(DevMeshCommand::class);
 
     config(['dev-mesh.command' => 'mesh']);
 

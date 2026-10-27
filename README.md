@@ -71,7 +71,7 @@ php artisan vendor:publish --tag=dev-mesh-config
 
 ```php
 return [
-    'command' => env('DEV_MESH_COMMAND', 'dev'),
+    'command' => env('DEV_MESH_COMMAND', 'dev-mesh'),
 
     'title' => null, // defaults to the application name
 
@@ -103,10 +103,11 @@ holds the certificate authority for `.test` TLS from those variables.
 ## Usage
 
 ```bash
-php artisan dev
+php artisan dev-mesh
 ```
 
-Press `q` or `Ctrl+C` to stop every service.
+Press `q` or `Ctrl+C` to stop every service. Set `DEV_MESH_COMMAND` (or
+`command` in the config) to use another name, e.g. `dev`.
 
 ## Translations
 
